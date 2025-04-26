@@ -28,7 +28,7 @@
 
     # Transformar a 'charges' y 'companies'
     docker compose run --rm app \
-    python main.py --transform
+    python main.py --transforms
 
     # Mostrar la vista agregada
     docker compose run --rm app \
@@ -37,6 +37,10 @@
     # Exportar a CSV (crea ./data/salida.csv) el archivo se mostrara en la carpeta data, en el host
     docker compose run --rm app \
     python main.py --extract /data/salida.csv
+
+    # Uso de la API
+    docker compose run --rm app \
+    python main.py --api 27
      ```
 
 4. **Acceder a la base de datos**
