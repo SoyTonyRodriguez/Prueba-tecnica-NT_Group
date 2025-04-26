@@ -47,6 +47,14 @@
     - user
     - password
 
+### ¿Por qué se incluyó mongo-express?
+- **Inspección inmediata de datos**. Permite verificar que las colecciones (raw_data, charges, companies) se poblaron correctamente sin instalar software extra.
+- **100 % en contenedores**. La app se levanta con un solo docker compose up.
+- **Lectura y edición rapidas**
+- **Alternativa a Compass**
+
+En el uso local, se utilizo compass para verificar el estado de la base de datos
+
 # Instalación (Local)
 
 1. **Clonar el repositorio o descargar los archivos.**
@@ -55,29 +63,6 @@
    pip install -r requirements.txt
    ```
 
-3. **Levantar MongoDB**
-
-   Si no tienes MongoDB instalado localmente, puedes usar Docker:
-   ```bash
-   docker-compose up -d
-   ```
-
-   Esto iniciará MongoDB en el puerto 27017.
-
----
-
-# Estructura del Proyecto
-
-```
-.
-├── docker-compose.yml
-├── main.py
-├── requirements.txt
-├── README.md
-└── data_prueba_tecnica.csv
-```
-
----
 
 # Uso
 
@@ -149,9 +134,3 @@ python main.py --api 7
 - **Reto:** Manejo de datos nulos y formatos de fecha inconsistentes.
 
 ---
-
-# Notas
-
-✅ Código organizado y comentado.
-✅ Listo para ser desplegado en cualquier ambiente local.
-✅ Ideal para ser versionado en GitHub.
