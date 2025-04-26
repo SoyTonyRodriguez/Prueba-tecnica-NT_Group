@@ -1,0 +1,54 @@
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    container_name: ntg_mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    ports:
+      - "27017:27017"
+    volumes:
+      # Persistencia de datos
+      - mongo_data:/data/db
+    networks:
+      - mongo-network
+
+  mongo-express:
+    image: mongo-express
+    restart: always # fixes MongoNetworkError when mongodb is not ready when mongo-express starts
+    container_name: ntg_mongo-express
+    ports:
+      - 8080:8081
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=password
+      - ME_CONFIG_BASICAUTH_USERNAME=user
+      - ME_CONFIG_BASICAUTH_PASSWORD=password
+      - ME_CONFIG_MONGO_DB_URL=mongodb://admin:password@ntg_mongo:27017
+      - ME_CONFIG_MONGODB_SERVER=mongo
+    networks:
+      - mongo-network
+
+  app:
+    build:
+      context: ./app
+    container_name: ntg_app
+    depends_on:
+      - mongo
+    # Comando por defecto: ejecutar transformaciones.
+    # Puedes pasarle otros args en tiempo de ejecución (ver más abajo).
+    command: ["python", "main.py", "--load", "/data/data.csv"]
+    volumes:
+      # Monta tu CSV local para probar --load sin reconstruir imagen
+      - ./data:/data
+    networks:
+      - mongo-network
+
+networks:
+  mongo-network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+    driver: local
